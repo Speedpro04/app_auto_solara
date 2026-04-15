@@ -35,3 +35,8 @@ lerna-debug.log*
 
 # OS
 Thumbs.db
+
+.env
+.env.local
+.env.*.local
+
