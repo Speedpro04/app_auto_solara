@@ -36,7 +36,7 @@ async def list_vehicles(
     store_id = request.state.store_id
 
     query = supabase.table("vehicles").select(
-        "id, store_id, title, type, brand, year, km, price, description, status, created_at"
+        "id, store_id, slug, title, type, brand, year, km, price, description, status, created_at"
     ).eq("store_id", store_id).eq("status", "available")
 
     if type:
@@ -63,20 +63,27 @@ async def list_vehicles(
     return vehicles
 
 
-@router.get("/vehicles/{vehicle_id}")
-async def get_vehicle_detail(request: Request, vehicle_id: str):
-    """Detalhes de um veículo com mídias"""
+@router.get("/vehicles/{slug_or_id}")
+async def get_vehicle_detail(request: Request, slug_or_id: str):
+    """Detalhes de um veículo com mídias (busca por slug ou ID)"""
     store_id = request.state.store_id
 
-    # Buscar veículo
+    # Tenta buscar por slug primeiro
     response = supabase.table("vehicles").select(
-        "id, store_id, title, type, brand, year, km, price, description, status, created_at"
-    ).eq("id", vehicle_id).eq("store_id", store_id).execute()
+        "id, store_id, slug, title, type, brand, year, km, price, description, status, created_at"
+    ).eq("slug", slug_or_id).eq("store_id", store_id).execute()
+
+    # Se não encontrar por slug, tenta por ID
+    if not response.data:
+        response = supabase.table("vehicles").select(
+            "id, store_id, slug, title, type, brand, year, km, price, description, status, created_at"
+        ).eq("id", slug_or_id).eq("store_id", store_id).execute()
 
     if not response.data:
         raise HTTPException(status_code=404, detail="Veículo não encontrado")
 
     vehicle = response.data[0]
+    vehicle_id = vehicle["id"]
 
     # Buscar mídias
     media_response = supabase.table("vehicle_media").select(

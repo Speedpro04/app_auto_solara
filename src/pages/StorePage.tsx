@@ -23,8 +23,18 @@ function StorePage() {
           api.get('/store'),
           api.get('/vehicles', { params: filters }),
         ])
-        setStore(storeRes.data)
+        const storeData = storeRes.data
+        setStore(storeData)
         setVehicles(vehiclesRes.data)
+
+        // SEO Dinâmico
+        if (storeData) {
+          document.title = `${storeData.name} | Veículos Premium em ${storeData.city || 'Sua Região'} - Solara Auto`;
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc) {
+            metaDesc.setAttribute('content', `Confira o estoque exclusivo da ${storeData.name} em ${storeData.city || 'nossa unidade'}. Carros seminovos e motos com garantia, perícia e as melhores taxas de financiamento.`);
+          }
+        }
       } catch (error) {
         console.error('Erro ao carregar dados:', error)
       } finally {
@@ -91,7 +101,7 @@ function StorePage() {
             )}
           </div>
           
-          <div className="flex-1 text-center md:text-left relative z-10">
+           <div className="flex-1 text-center md:text-left relative z-10">
             <h1 className="text-4xl md:text-6xl font-black font-impact tracking-tighter uppercase mb-4">{store.name}</h1>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-[10px] font-black uppercase tracking-widest text-[#576574] mb-6">
                <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-[#1dd1a1]" /> {store.city || 'Matriz Premium'}</span>
@@ -99,7 +109,7 @@ function StorePage() {
             </div>
             
             <p className="text-[#8395a7] font-medium leading-relaxed max-w-2xl mb-8">
-              {store.about_text || 'Concessionária partner de alto padrão. Veículos selecionados com rigoroso controle de qualidade.'}
+              {store.about_text || `Bem-vindo à ${store.name}. Nossa unidade em ${store.city || 'sua região'} é especializada em veículos de altíssima performance, todos revisados e com garantia Solara.`}
             </p>
 
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
@@ -122,6 +132,23 @@ function StorePage() {
                 </a>
               )}
             </div>
+
+            {/* Schema.org AutoDealer for Store */}
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "AutoDealer",
+                "name": store.name,
+                "url": window.location.href,
+                "logo": store.logo_url,
+                "telephone": store.phone,
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": store.city || "São Paulo",
+                  "addressCountry": "BR"
+                }
+              })}
+            </script>
           </div>
         </div>
 
@@ -168,7 +195,7 @@ function StorePage() {
 
         {/* Vehicles Grid */}
         <div className="mb-8">
-           <h2 className="text-3xl font-black tracking-tighter font-impact uppercase mb-4">Estoque da Unidade</h2>
+           <h2 className="text-3xl font-black tracking-tighter font-impact uppercase mb-4">Veja Nosso Estoque de Seminovos em {store.city || 'Unidade Solara'}</h2>
            <div className="w-16 h-1 bg-[#1dd1a1] mb-10" />
         </div>
 
@@ -201,14 +228,14 @@ function VehicleCard({ vehicle }: { vehicle: VehicleWithMedia }) {
 
   return (
     <Link
-      to={`/veiculo/${vehicle.id}`}
+      to={`/veiculo/${vehicle.slug || vehicle.id}`}
       className="group relative bg-[#14181C] rounded-[40px] border border-white/5 hover:border-[#1dd1a1]/50 overflow-hidden transition-all duration-700 hover:-translate-y-3 hover:shadow-[0_40px_80px_-20px_rgba(29,209,161,0.2)]"
     >
       <div className="relative h-[280px] overflow-hidden">
         {coverImage ? (
-          <img src={coverImage} alt={vehicle.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+          <img src={coverImage} alt={`${vehicle.title} ${vehicle.brand} seminovo à venda — Solara Auto`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
         ) : (
-          <div className="w-full h-full bg-[#000000] flex items-center justify-center"><Car className="w-20 h-20 text-[#111]" /></div>
+          <div className="w-full h-full bg-[#000000] flex items-center justify-center"><Car className="w-20 h-20 text-[#111]" alt="Veículo sem imagem" /></div>
         )}
         
         {/* Status Badges */}

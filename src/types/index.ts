@@ -19,6 +19,7 @@ export interface Store {
 export interface Vehicle {
   id: string
   store_id: string
+  slug: string
   title: string
   type: 'carro' | 'moto'
   brand: string
@@ -49,4 +50,6 @@ export interface StoreUser {
 
 export interface VehicleWithMedia extends Vehicle {
   media: VehicleMedia[]
+  city?: string
+  store?: Store
 }

@@ -13,6 +13,7 @@ router = APIRouter()
 
 class VehicleCreate(BaseModel):
     title: str
+    slug: Optional[str] = None
     type: str
     brand: str
     year: int
@@ -25,6 +26,7 @@ class VehicleCreate(BaseModel):
 
 class VehicleUpdate(BaseModel):
     title: Optional[str] = None
+    slug: Optional[str] = None
     type: Optional[str] = None
     brand: Optional[str] = None
     year: Optional[int] = None
@@ -91,7 +93,7 @@ async def list_admin_vehicles(request: Request):
     store_id = request.state.store_id
 
     response = supabase.table("vehicles").select(
-        "id, store_id, title, type, brand, year, km, price, description, status, created_at"
+        "id, store_id, slug, title, type, brand, year, km, price, description, status, created_at"
     ).eq("store_id", store_id).order("created_at", desc=True).execute()
 
     vehicles = response.data
@@ -112,7 +114,7 @@ async def get_admin_vehicle(request: Request, vehicle_id: str):
     store_id = request.state.store_id
 
     response = supabase.table("vehicles").select(
-        "id, store_id, title, type, brand, year, km, price, description, status, created_at"
+        "id, store_id, slug, title, type, brand, year, km, price, description, status, created_at"
     ).eq("id", vehicle_id).eq("store_id", store_id).execute()
 
     if not response.data:
@@ -142,8 +144,19 @@ async def create_vehicle(request: Request, vehicle: VehicleCreate):
     # Validar limites do plano (simplificado)
     # Em produção, verificar plano e contar veículos ativos
 
+    import re
+    def slugify(s):
+        s = s.lower()
+        s = re.sub(r'[^\w\s-]', '', s)
+        s = re.sub(r'[\s_-]+', '-', s)
+        s = re.sub(r'^-+|-+$', '', s)
+        return s
+
+    slug = vehicle.slug or slugify(f"{vehicle.brand}-{vehicle.title}-{vehicle.year}")
+
     response = supabase.table("vehicles").insert({
         "store_id": vehicle.store_id,
+        "slug": slug,
         "title": vehicle.title,
         "type": vehicle.type,
         "brand": vehicle.brand,

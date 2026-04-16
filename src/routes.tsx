@@ -5,6 +5,9 @@ import Home from './pages/Home'
 import StorePage from './pages/StorePage'
 import VehicleDetail from './pages/VehicleDetail'
 import StoresList from './pages/StoresList'
+import Catalog from './pages/Catalog'
+import AboutUs from './pages/AboutUs'
+import Contact from './pages/Contact'
 
 // Páginas Admin
 import AdminLogin from './pages/admin/Login'
@@ -14,6 +17,7 @@ import AdminNewVehicle from './pages/admin/NewVehicle'
 import AdminEditVehicle from './pages/admin/EditVehicle'
 import AdminStoreProfile from './pages/admin/StoreProfile'
 import SecondBrainAuto from './pages/admin/SecondBrain'
+import SuperAdminDashboard from './pages/superadmin/Dashboard'
 
 // Layouts
 import PublicLayout from './layouts/PublicLayout'
@@ -26,8 +30,11 @@ function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/stores" element={<StoresList />} />
+        <Route path="/catalogo" element={<Catalog />} />
+        <Route path="/sobre-nos" element={<AboutUs />} />
+        <Route path="/contato" element={<Contact />} />
         <Route path="/:slug" element={<StorePage />} />
-        <Route path="/veiculo/:id" element={<VehicleDetail />} />
+        <Route path="/veiculo/:slug" element={<VehicleDetail />} />
       </Route>
 
       {/* Rotas Admin */}
@@ -40,6 +47,8 @@ function AppRoutes() {
         <Route path="/admin/loja" element={<AdminStoreProfile />} />
         <Route path="/admin/second-brain" element={<SecondBrainAuto />} />
       </Route>
+      {/* Rota do Dono do SaaS (Você) */}
+      <Route path="/super-admin" element={<SuperAdminDashboard />} />
     </Routes>
   )
 }

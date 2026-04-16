@@ -40,9 +40,9 @@ function Header() {
           {/* Modern Navigation Menu */}
           <nav className="hidden md:flex items-center gap-10">
             {[
-              { label: 'Catálogo', path: '/' },
-              { label: 'Sobre Nós', path: '#' },
-              { label: 'Contato', path: '#' }
+              { label: 'Catálogo', path: '/catalogo' },
+              { label: 'Sobre Nós', path: '/sobre-nos' },
+              { label: 'Contato', path: '/contato' }
             ].map((item) => (
               <Link 
                 key={item.label}
@@ -75,7 +75,9 @@ function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-[100%] left-0 right-0 bg-[#0A0D10] border-b border-white/5 shadow-2xl animate-in slide-in-from-top-4 duration-300">
           <div className="p-8 flex flex-col gap-6">
-             <Link to="/" className="text-lg font-bold text-white uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>Catálogo Premium</Link>
+             <Link to="/catalogo" className="text-lg font-bold text-white uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>Catálogo Premium</Link>
+             <Link to="/sobre-nos" className="text-lg font-bold text-white uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>Nossa História</Link>
+             <Link to="/contato" className="text-lg font-bold text-[#1dd1a1] uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>Consultoria Elite (Contato)</Link>
              <Link to="/login" className="px-6 py-4 bg-[#1dd1a1] text-black text-center rounded-2xl font-black uppercase tracking-widest" onClick={() => setMobileMenuOpen(false)}>Portal Adm</Link>
           </div>
         </div>

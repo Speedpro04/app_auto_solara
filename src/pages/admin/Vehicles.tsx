@@ -2,19 +2,22 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Car, Plus, Pencil, Trash2, Search, ExternalLink } from 'lucide-react'
 import api from '../../lib/api'
+import { useAuth } from '../../hooks/useAuth'
 
 function AdminVehicles() {
   const [vehicles, setVehicles] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
 
+  const { store } = useAuth()
+
   useEffect(() => {
-    fetchVehicles()
-  }, [])
+    if (store?.id) fetchVehicles()
+  }, [store])
 
   const fetchVehicles = async () => {
     try {
-      const { data } = await api.get('/admin/vehicles')
+      const { data } = await api.get(`/api/stores/${store?.id}/vehicles`)
       setVehicles(data)
     } catch (error) {
       console.error('Erro ao carregar veículos:', error)
@@ -27,7 +30,7 @@ function AdminVehicles() {
     if (!confirm('Tem certeza que deseja excluir este veículo de elite?')) return
 
     try {
-      await api.delete(`/admin/vehicles/${id}`)
+      await api.delete(`/api/vehicles/${id}`)
       fetchVehicles()
     } catch (error) {
       console.error('Erro ao excluir veículo:', error)
@@ -154,7 +157,7 @@ function AdminVehicles() {
                   
                   <div className="flex items-center gap-2 flex-1 md:flex-none justify-end">
                     <Link
-                      to={`/veiculo/${vehicle.id}`}
+                      to={`/veiculo/${vehicle.slug || vehicle.id}`}
                       target="_blank"
                       className="p-3 text-[#555] hover:text-white hover:bg-white/5 rounded-[10px] transition"
                       title="Ver Vitrine"

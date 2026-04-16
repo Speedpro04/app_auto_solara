@@ -3,21 +3,25 @@ import { Link } from 'react-router-dom'
 import { Car, Users, TrendingUp, DollarSign, Plus, ArrowUpRight, Clock, BrainCircuit, Activity } from 'lucide-react'
 import { motion } from 'framer-motion'
 import api from '../../lib/api'
+import { useAuth } from '../../hooks/useAuth'
 
 function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
   const [recentVehicles, setRecentVehicles] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const { store } = useAuth()
 
   useEffect(() => {
     const fetchDashboardData = async () => {
+      if (!store?.id) return;
+      
       try {
         const [statsRes, vehiclesRes] = await Promise.all([
-          api.get('/admin/stats'),
-          api.get('/admin/vehicles?limit=5'),
+          api.get(`/api/stores/${store.id}/dashboard`),
+          api.get(`/api/stores/${store.id}/vehicles`),
         ])
         setStats(statsRes.data)
-        setRecentVehicles(vehiclesRes.data)
+        setRecentVehicles(vehiclesRes.data.slice(0, 5))
       } catch (error) {
         console.error('Erro ao carregar dashboard:', error)
       } finally {
@@ -26,13 +30,13 @@ function AdminDashboard() {
     }
 
     fetchDashboardData()
-  }, [])
+  }, [store])
 
   const statCards = [
-    { label: 'Veículos Ativos', value: stats?.totalVehicles || 0, icon: Car, color: '#1dd1a1', trend: '+4% este mês' },
-    { label: 'Leads (Mês)', value: stats?.totalLeads || 0, icon: Users, color: '#1dd1a1', trend: '+12% este mês' },
-    { label: 'Valor em Estoque', value: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats?.totalValue || 0), icon: DollarSign, color: '#FFFFFF', trend: 'Auditado' },
-    { label: 'Conversão', value: '12%', icon: TrendingUp, color: '#1dd1a1', trend: 'Acima da média' },
+    { label: 'Veículos Ativos', value: stats?.total_vehicles || 0, icon: Car, color: '#1dd1a1', trend: '+4% este mês' },
+    { label: 'Leads (Mês)', value: stats?.total_leads || 0, icon: Users, color: '#1dd1a1', trend: '+12% este mês' },
+    { label: 'Valor em Estoque', value: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats?.total_portfolio_value || 0), icon: DollarSign, color: '#FFFFFF', trend: 'Auditado' },
+    { label: 'Ticket Médio', value: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(stats?.average_price || 0), icon: TrendingUp, color: '#1dd1a1', trend: 'Acima da média' },
   ]
 
   const containerVariants = {

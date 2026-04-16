@@ -1,9 +1,22 @@
 import { useState, useEffect, createContext, useContext } from 'react'
-import { supabase } from '../lib/supabase'
-import { StoreUser } from '../types'
+import api from '../lib/api'
+
+interface User {
+  id: string
+  email: string
+}
+
+interface Store {
+  id: string
+  name: string
+  slug: string
+  phone?: string
+  logo_url?: string
+}
 
 interface AuthContextType {
-  user: StoreUser | null
+  user: User | null
+  store: Store | null
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
@@ -12,51 +25,55 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<StoreUser | null>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [store, setStore] = useState<Store | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const token = localStorage.getItem('auth_token')
     const storedUser = localStorage.getItem('user')
-    
+    const storedStore = localStorage.getItem('store')
+
     if (token && storedUser) {
       setUser(JSON.parse(storedUser))
+      if (storedStore) setStore(JSON.parse(storedStore))
     }
-    
+
     setLoading(false)
   }, [])
 
   const login = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    // Autentica via a nova API FastAPI (que faz o proxy pro Supabase Auth)
+    const { data } = await api.post('/api/auth/login', { email, password })
 
-    if (error) throw error
-
-    // Buscar dados do usuário da loja
-    const { data: storeUser } = await supabase
-      .from('store_users')
-      .select('*')
-      .eq('id', data.user.id)
-      .single()
-
-    if (storeUser) {
-      localStorage.setItem('auth_token', data.session?.access_token || '')
-      localStorage.setItem('user', JSON.stringify(storeUser))
-      setUser(storeUser)
+    if (!data.success) {
+      throw new Error('Credenciais inválidas')
     }
+
+    // Salva token e dados no localStorage
+    localStorage.setItem('auth_token', data.access_token)
+    localStorage.setItem('refresh_token', data.refresh_token)
+    localStorage.setItem('user', JSON.stringify(data.user))
+    
+    if (data.store) {
+      localStorage.setItem('store', JSON.stringify(data.store))
+      setStore(data.store)
+    }
+
+    setUser(data.user)
   }
 
   const logout = () => {
     localStorage.removeItem('auth_token')
+    localStorage.removeItem('refresh_token')
     localStorage.removeItem('user')
+    localStorage.removeItem('store')
     setUser(null)
-    supabase.auth.signOut()
+    setStore(null)
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, store, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

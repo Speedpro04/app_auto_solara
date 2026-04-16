@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom'
 import { Upload, X, Plus, Car, Save, Info, Camera, Image as ImageIcon } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import api from '../../lib/api'
-import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 
 function AdminNewVehicle() {
   const navigate = useNavigate()
-  const { user } = useAuth()
+  const { store } = useAuth()
   const [loading, setLoading] = useState(false)
   const [images, setImages] = useState<Array<{ file: File; preview: string }>>([])
   
@@ -60,26 +59,30 @@ function AdminNewVehicle() {
 
     setLoading(true)
     try {
-      const { data: vehicle } = await api.post('/admin/vehicles', formData)
+      // 1. Cria o veículo vinculado a loja atual
+      const { data: { vehicle } } = await api.post('/api/vehicles', {
+        ...formData,
+        store_id: store?.id,
+        year: parseInt(formData.year) || 2024,
+        km: parseInt(formData.km) || 0,
+        price: parseFloat(formData.price) || 0,
+      })
 
-      const uploadPromises = images.map(async (img, index) => {
-        const fileExt = img.file.name.split('.').pop()
-        const fileName = `${vehicle.id}/${Math.random()}.${fileExt}`
-        
-        const { error: uploadError } = await supabase.storage
-          .from('vehicles')
-          .upload(fileName, img.file)
+      // 2. Faz o upload das imagens pelo FastAPI (Protegido e Seguro)
+      const uploadPromises = images.map(async (img) => {
+        const uploadData = new FormData()
+        uploadData.append('file', img.file)
 
-        if (uploadError) throw uploadError
+        // Upload no backend (vai pro bucket solara_media e retorna a URL)
+        const { data: { url } } = await api.post('/api/upload/', uploadData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
 
-        const { data: urlData } = supabase.storage
-          .from('vehicles')
-          .getPublicUrl(fileName)
-
-        return api.post(`/admin/vehicles/${vehicle.id}/media`, {
-          url: urlData.publicUrl,
-          type: 'image',
-          order: index,
+        // 3. Vincula a URL pública ao veículo recém criado
+        return api.post(`/api/vehicles/media`, {
+          vehicle_id: vehicle.id,
+          url: url,
+          type: 'image'
         })
       })
 

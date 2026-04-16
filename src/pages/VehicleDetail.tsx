@@ -5,7 +5,7 @@ import api from '../lib/api'
 import { VehicleWithMedia } from '../types'
 
 function VehicleDetail() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const [vehicle, setVehicle] = useState<VehicleWithMedia | null>(null)
   const [loading, setLoading] = useState(true)
   const [activeImage, setActiveImage] = useState(0)
@@ -13,8 +13,17 @@ function VehicleDetail() {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const { data } = await api.get(`/vehicles/${id}`)
+        const { data } = await api.get(`/vehicles/${slug}`)
         setVehicle(data)
+
+        // SEO Dinâmico do Veículo
+        if (data) {
+          document.title = `${data.brand} ${data.title} ${data.year} | Seminovo em ${data.city || 'Estado de Arte'} - Solara Auto`;
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc) {
+            metaDesc.setAttribute('content', `Compre seu ${data.brand} ${data.title} ${data.year} na Solara Auto. Veículo com ${data.km.toLocaleString('pt-BR')}km, periciado e com garantia. Confira o preço e simule agora.`);
+          }
+        }
       } catch (error) {
         console.error('Erro ao carregar veículo:', error)
       } finally {
@@ -22,7 +31,7 @@ function VehicleDetail() {
       }
     }
     fetchVehicle()
-  }, [id])
+  }, [slug])
 
   if (loading) {
     return (
@@ -74,9 +83,15 @@ function VehicleDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
           {/* Left Column: Gallery */}
           <div className="lg:col-span-12">
-             <div className="space-y-6">
+             <div className="space-y-4">
+               <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-[#1dd1a1] bg-[#1dd1a1]/5 border border-[#1dd1a1]/20 px-4 py-2 rounded-full">
+                 100% Periciado — Pronto para Entrega
+               </span>
                <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase font-impact">{vehicle.brand} {vehicle.title}</h1>
-               <div className="flex flex-wrap items-center gap-6">
+               <p className="font-['Architects_Daughter'] text-2xl text-[#1dd1a1] opacity-80 italic">
+                 "A máquina que você merecia estava esperando aqui."
+               </p>
+               <div className="flex flex-wrap items-center gap-6 pt-2">
                   <span className="flex items-center gap-2 text-[#576574] font-bold text-sm uppercase tracking-widest"><Calendar className="w-4 h-4 text-[#1dd1a1]" /> {vehicle.year}</span>
                   <span className="flex items-center gap-2 text-[#576574] font-bold text-sm uppercase tracking-widest"><Gauge className="w-4 h-4 text-[#1dd1a1]" /> {vehicle.km.toLocaleString('pt-BR')} KM</span>
                   <span className="flex items-center gap-2 text-[#576574] font-bold text-sm uppercase tracking-widest"><MapPin className="w-4 h-4 text-[#1dd1a1]" /> {vehicle.city || 'Disponibilidade Imediata'}</span>
@@ -119,6 +134,11 @@ function VehicleDetail() {
               <div className="text-[#8395a7] leading-relaxed text-lg whitespace-pre-wrap font-medium">
                 {vehicle.description || 'Nenhuma descrição detalhada disponível.'}
               </div>
+              <div className="border-t border-white/5 pt-8">
+                <p className="font-['Architects_Daughter'] text-xl md:text-2xl text-white opacity-50">
+                  "Este veículo passou por 120 pontos de inspeção antes de chegar até você."
+                </p>
+              </div>
             </div>
           </div>
 
@@ -134,16 +154,16 @@ function VehicleDetail() {
 
                 <div className="space-y-4">
                    <a 
-                    href={`https://wa.me/${vehicle.store?.phone || '5511999999999'}?text=Olá! Tenho interesse no ${vehicle.title}`}
+                    href={`https://wa.me/${vehicle.store?.phone || '5511999999999'}?text=Olá! Tenho interesse no ${vehicle.title} — ${vehicle.year} — ${vehicle.km.toLocaleString('pt-BR')}km. Podemos conversar?`}
                     target="_blank"
                     className="flex items-center justify-center gap-4 w-full bg-[#1dd1a1] text-black py-6 rounded-2xl font-black uppercase tracking-widest hover:bg-white hover:scale-105 hover:shadow-[0_0_30px_rgba(29,209,161,0.4)] transition-all duration-500 group"
                    >
                      <MessageSquare className="w-6 h-6 group-hover:rotate-12 transition-transform" />
-                     Negotiar via WhatsApp
+                     Quero Este Carro
                    </a>
                    
-                   <p className="text-center text-[10px] text-[#576574] font-black uppercase tracking-widest">
-                     Atendimento Real-Time pela Concessionária
+                   <p className="text-center font-['Architects_Daughter'] text-base text-[#1dd1a1] opacity-70">
+                     "Resposta em até 5 minutos pelo WhatsApp."
                    </p>
                 </div>
 
