@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Car, Users, TrendingUp, DollarSign, Plus, ArrowUpRight, Clock, BrainCircuit, Activity } from 'lucide-react'
+import { Car, Users, TrendingUp, DollarSign, Plus, Clock, BrainCircuit, Activity } from 'lucide-react'
 import { motion } from 'framer-motion'
 import api from '../../lib/api'
 import { useAuth } from '../../hooks/useAuth'
@@ -8,7 +8,6 @@ import { useAuth } from '../../hooks/useAuth'
 function AdminDashboard() {
   const [stats, setStats] = useState<any>(null)
   const [recentVehicles, setRecentVehicles] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
   const { store } = useAuth()
 
   useEffect(() => {
@@ -25,7 +24,6 @@ function AdminDashboard() {
       } catch (error) {
         console.error('Erro ao carregar dashboard:', error)
       } finally {
-        setLoading(false)
       }
     }
 

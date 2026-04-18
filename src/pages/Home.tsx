@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Car, Search, ArrowRight, ShieldCheck, Zap, Star, Play, Gauge, Shield, Sparkles } from 'lucide-react'
+import { Car, Search, ArrowRight, ShieldCheck, Zap, Star, Play, Shield, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import api from '../lib/api'
 import { VehicleWithMedia, Store } from '../types'

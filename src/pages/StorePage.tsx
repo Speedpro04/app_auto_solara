@@ -235,7 +235,7 @@ function VehicleCard({ vehicle }: { vehicle: VehicleWithMedia }) {
         {coverImage ? (
           <img src={coverImage} alt={`${vehicle.title} ${vehicle.brand} seminovo à venda — Solara Auto`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
         ) : (
-          <div className="w-full h-full bg-[#000000] flex items-center justify-center"><Car className="w-20 h-20 text-[#111]" alt="Veículo sem imagem" /></div>
+          <div className="w-full h-full bg-[#000000] flex items-center justify-center"><Car className="w-20 h-20 text-[#111]" /></div>
         )}
         
         {/* Status Badges */}

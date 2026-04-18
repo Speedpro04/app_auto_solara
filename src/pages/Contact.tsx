@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { motion } from 'framer-motion'
 import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck } from 'lucide-react'
 
 function Contact() {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Car, ChevronLeft, ChevronRight, Phone, MessageSquare, MapPin, Calendar, Gauge, Info, ShieldCheck, Zap } from 'lucide-react'
+import { Car, ChevronLeft, MessageSquare, MapPin, Calendar, Gauge, Info, ShieldCheck, Zap } from 'lucide-react'
 import api from '../lib/api'
 import { VehicleWithMedia } from '../types'
 

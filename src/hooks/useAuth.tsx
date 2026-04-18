@@ -4,6 +4,8 @@ import api from '../lib/api'
 interface User {
   id: string
   email: string
+  name?: string
+  store_id?: string
 }
 
 interface Store {

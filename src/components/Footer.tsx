@@ -1,4 +1,3 @@
-import { Car } from 'lucide-react'
 
 function Footer() {
   return (

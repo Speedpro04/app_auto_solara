@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ShieldCheck, Crosshair, ArrowRight, Award, Clock } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 function AboutUs() {
   useEffect(() => {

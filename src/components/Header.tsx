@@ -12,8 +12,6 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const primaryColor = '#1dd1a1'
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-[1000] border-b transition-all duration-700 ${

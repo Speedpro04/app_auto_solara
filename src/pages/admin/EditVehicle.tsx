@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, Upload, X, Car } from 'lucide-react'
+import { ArrowLeft, X, Car } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import api from '../../lib/api'
-import { supabase } from '../../lib/supabase'
 import { useAuth } from '../../hooks/useAuth'
 
 function AdminEditVehicle() {
   const { id } = useParams<{ id: string }>()
-  const { user } = useAuth()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(true)

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Car, Search, Play, Gauge, Shield, ArrowRight, X, Info } from 'lucide-react'
+import { Car, Search, Gauge, Shield, ArrowRight, X, Info } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import api from '../lib/api'
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Building2, Users, Target, Activity, Power, ShieldCheck, DollarSign, Database } from 'lucide-react'
+import { Building2, Users, Activity, Power, ShieldCheck, DollarSign, Database, Car } from 'lucide-react'
 import api from '../../lib/api'
 import { useNavigate } from 'react-router-dom'
 
@@ -48,11 +48,6 @@ function SuperAdminDashboard() {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-  }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1 }
   }
 
   if (loading) {

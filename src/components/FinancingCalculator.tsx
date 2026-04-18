@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Calculator, Send, Car, Wallet, ArrowRight, X } from 'lucide-react'
+import { Calculator, Send, Wallet, X } from 'lucide-react'
 
 interface FinancingCalculatorProps {
   isOpen: boolean;

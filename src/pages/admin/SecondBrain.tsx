@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { 
-  BrainCircuit, Search, FileText, Plus, Zap, Sparkles, Database, Car, Link as LinkIcon, Clock, Share2
+  BrainCircuit, Search, FileText, Plus, Zap, Database, Link as LinkIcon, Clock, Share2
 } from 'lucide-react';
 import AutoGraph from '../../components/admin/AutoGraph';
 import { motion } from 'framer-motion';
@@ -24,7 +24,7 @@ const SecondBrainAuto: React.FC = () => {
       {/* Sidebar Notas */}
       <aside style={{ background: '#080808', borderRadius: '32px', padding: '32px', color: 'white', display: 'flex', flexDirection: 'column', border: '1px solid white/5' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '32px' }}>
-          <div style={{ p: '10px', background: '#1dd1a1/10', borderRadius: '12px' }}>
+          <div style={{ padding: '10px', background: 'rgba(29, 209, 161, 0.1)', borderRadius: '12px' }}>
             <BrainCircuit size={24} color="#1dd1a1" />
           </div>
           <h2 style={{ fontSize: '14px', fontWeight: 900, letterSpacing: '0.2em', textTransform: 'uppercase', fontStyle: 'italic', fontFamily: 'Impact' }}>AUTO BRAIN</h2>
@@ -66,12 +66,12 @@ const SecondBrainAuto: React.FC = () => {
       </aside>
 
       {/* Editor */}
-      <main style={{ background: '#000', borderRadius: '40px', padding: '48px', border: '1px solid white/5', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', h: '300px', background: '#1dd1a1/5', filter: 'blur(100px)', borderRadius: 'full', pointerEvents: 'none' }} />
+      <main style={{ background: '#000', borderRadius: '40px', padding: '48px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: 'rgba(29, 209, 161, 0.05)', filter: 'blur(100px)', borderRadius: '100%', pointerEvents: 'none' }} />
         
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', position: 'relative', zIndex: 10 }}>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <span style={{ background: '#1dd1a1/10', color: '#1dd1a1', padding: '8px 16px', borderRadius: '99px', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid #1dd1a1/20' }}>
+            <span style={{ background: 'rgba(29, 209, 161, 0.1)', color: '#1dd1a1', padding: '8px 16px', borderRadius: '99px', fontSize: '9px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', border: '1px solid rgba(29, 209, 161, 0.2)' }}>
               <Database size={12} style={{ display: 'inline', marginRight: '6px' }} />
               Polars Engine
             </span>
@@ -92,7 +92,7 @@ const SecondBrainAuto: React.FC = () => {
         />
 
         {/* Editor Area with Logo Background */}
-        <div style={{ relative: 'true', flex: 1, background: '#050505', borderRadius: '32px', padding: '40px', overflow: 'hidden', border: '1px solid white/5' }}>
+        <div style={{ position: 'relative', flex: 1, background: '#050505', borderRadius: '32px', padding: '40px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.05)' }}>
           <img 
             src="/logo-auto-destaque.png" 
             alt="" 
@@ -106,9 +106,9 @@ const SecondBrainAuto: React.FC = () => {
 
       {/* Painel de Conexões */}
       <aside style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        <div style={{ background: '#080808', borderRadius: '32px', padding: '32px', color: 'white', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px', border: '1px solid white/5' }}>
+        <div style={{ background: '#080808', borderRadius: '32px', padding: '32px', color: 'white', flex: 1, display: 'flex', flexDirection: 'column', gap: '24px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ p: '8px', background: '#1dd1a1/10', rounded: '10px' }}>
+            <div style={{ padding: '8px', background: 'rgba(29, 209, 161, 0.1)', borderRadius: '10px' }}>
               <LinkIcon size={18} color="#1dd1a1" />
             </div>
             <h3 style={{ fontSize: '11px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', fontStyle: 'italic', fontFamily: 'Impact' }}>Sales Graph</h3>
@@ -118,7 +118,7 @@ const SecondBrainAuto: React.FC = () => {
             <AutoGraph />
           </div>
 
-          <div style={{ background: '#1dd1a1/5', borderRadius: '24px', padding: '24px', border: '1px solid #1dd1a1/10' }}>
+          <div style={{ background: 'rgba(29, 209, 161, 0.05)', borderRadius: '24px', padding: '24px', border: '1px solid rgba(29, 209, 161, 0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
               <Zap size={14} color="#1dd1a1" />
               <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.15em', color: '#1dd1a1' }}>Intel Engine</span>
@@ -129,9 +129,9 @@ const SecondBrainAuto: React.FC = () => {
           </div>
 
           {/* Luxury Badge */}
-          <div style={{ background: 'linear-gradient(135deg, #111, #000)', borderRadius: '32px', padding: '32px', marginTop: 'auto', textAlign: 'center', border: '1px solid white/5', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
-            <img src="/logo-auto-principal.png" alt="Solara Auto" style={{ width: '140px', margin: '0 auto 20px', borderRadius: '16px', border: '1px solid white/5', objectFit: 'contain' }} />
-            <div style={{ w: '40px', h: '2px', background: '#1dd1a1', margin: '0 auto 16px' }} />
+          <div style={{ background: 'linear-gradient(135deg, #111, #000)', borderRadius: '32px', padding: '32px', marginTop: 'auto', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 20px 40px rgba(0,0,0,0.5)' }}>
+            <img src="/logo-auto-principal.png" alt="Solara Auto" style={{ width: '140px', margin: '0 auto 20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)', objectFit: 'contain' }} />
+            <div style={{ width: '40px', height: '2px', background: '#1dd1a1', margin: '0 auto 16px' }} />
             <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: 'white' }}>Solara</span>
             <span style={{ fontSize: '10px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.4em', color: '#1dd1a1' }}> Auto</span>
           </div>

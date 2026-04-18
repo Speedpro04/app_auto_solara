@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Upload, X, Plus, Car, Save, Info, Camera, Image as ImageIcon } from 'lucide-react'
+import { Upload, X, Save, Info, Camera } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import api from '../../lib/api'
 import { useAuth } from '../../hooks/useAuth'
