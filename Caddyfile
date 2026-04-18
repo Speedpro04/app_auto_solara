@@ -1,0 +1,17 @@
+:80 {
+    root * /app/dist
+    file_server
+
+    # Fallback for SPA
+    try_files {path} /index.html
+
+    # Proxy API requests to the backend
+    handle_path /api/* {
+        reverse_proxy localhost:8000
+    }
+
+    # Logging
+    log {
+        output stdout
+    }
+}
