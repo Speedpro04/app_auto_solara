@@ -31,7 +31,7 @@ function Header() {
               className="w-[86px] h-[70px] object-contain rounded-xl shadow-[0_0_20px_rgba(29,209,161,0.2)]" 
             />
             <span className="text-xl md:text-2xl font-black text-white tracking-[0.2em] font-['Architects_Daughter'] uppercase">
-              SOLARA <span className="text-[#1dd1a1]">AUTO</span>
+              AUTO <span className="text-[#1dd1a1]">RACER</span>
             </span>
           </Link>
 

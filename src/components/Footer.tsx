@@ -6,7 +6,7 @@ function Footer() {
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <div className="flex items-center gap-4 mb-4">
             <img src="/logo-auto-principal.png" alt="Auto Racer" className="w-[120px] object-contain drop-shadow-[0_0_15px_rgba(29,209,161,0.2)]" />
-            <span className="text-3xl md:text-4xl font-black tracking-[0.2em] font-['Architects_Daughter'] uppercase">SOLARA <span className="text-[#1dd1a1]">AUTO</span></span>
+            <span className="text-3xl md:text-4xl font-black tracking-[0.2em] font-['Architects_Daughter'] uppercase">AUTO <span className="text-[#1dd1a1]">RACER</span></span>
           </div>
           <p className="text-[#576574] text-sm max-w-sm mb-6 font-medium leading-relaxed italic">
              A vanguarda da mobilidade premium. Tecnologia e design em perfeita simbiose.
