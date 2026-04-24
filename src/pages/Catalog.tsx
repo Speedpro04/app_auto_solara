@@ -202,17 +202,15 @@ function Catalog() {
                 "Não negocie a sua tranquilidade."
               </p>
               <h2 className="text-xl md:text-xl font-black font-impact tracking-tighter uppercase italic mb-6">
-                Não achou o que procurava?<br />
-                <span className="text-[#1dd1a1]">Fale com nosso Consultor Elite.</span>
+                Quer vender seus veículos aqui?<br />
+                <span className="text-[#1dd1a1]">Seja um Parceiro Elite Auto Racer.</span>
               </h2>
-              <a
-                href="https://wa.me/5511999999999?text=Olá! Procuro um veículo e gostaria da ajuda de um consultor."
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/parceiro"
                 className="inline-flex items-center gap-4 px-10 py-6 bg-[#1dd1a1] text-black font-black uppercase tracking-widest rounded-[25px] hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(29,209,161,0.4)]"
               >
-                Falar com Consultor Agora <ArrowRight size={20} />
-              </a>
+                Conhecer Planos de Parceiro <ArrowRight size={20} />
+              </Link>
             </div>
           </div>
         )}

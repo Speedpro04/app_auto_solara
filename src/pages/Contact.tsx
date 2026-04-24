@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { MapPin, Phone, Mail, Clock, ArrowRight, ShieldCheck } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 function Contact() {
   useEffect(() => {
@@ -80,24 +81,22 @@ assessoria@autoracer.com.br
           <div className="bg-gradient-to-br from-[#0d1117] to-[#14181C] border border-[#1dd1a1]/30 rounded-[50px] p-12 relative shadow-[0_30px_60px_-15px_rgba(29,209,161,0.15)] h-full flex flex-col justify-center">
             
             <h2 className="text-xl lg:text-xl font-black font-impact tracking-tighter uppercase italic mb-6">
-              O Seu Tempo <br />Não Pode Esperar.
+              Escalabilidade <br />Para Sua Loja.
             </h2>
             <p className="font-['Architects_Daughter'] text-xl text-[#1dd1a1] opacity-90 mb-8 rotate-[-2deg]">
-              "Resolveremos o seu problema em até 5 minutos."
+              "Seja um parceiro da plataforma que mais cresce."
             </p>
             
             <p className="text-[#8395a7] text-lg font-medium leading-relaxed mb-10">
-              Para maior agilidade e confidencialidade documental, todo nosso fluxo de propostas opera via WhatsApp seguro. Mande a marca e o modelo do seu sonho, ou a placa do ativo que quer dar na troca.
+              Transforme a gestão de estoque e vendas da sua concessionária com a nossa tecnologia. Oferecemos ferramentas de elite para lojistas que não aceitam o comum.
             </p>
 
-            <a 
-              href="https://wa.me/5511999999999?text=Olá! Preciso da consultoria de um especialista Auto Racer."
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link 
+              to="/parceiro"
               className="w-full flex items-center justify-center gap-4 py-8 bg-[#1dd1a1] text-black font-black uppercase tracking-widest text-sm rounded-[30px] hover:bg-white hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(29,209,161,0.3)] transition-all duration-300"
             >
-              Iniciar Chat Confidencial <ArrowRight size={20} />
-            </a>
+              CONHECER PLANOS DE PARCERIA <ArrowRight size={20} />
+            </Link>
             
             <div className="mt-8 pt-8 border-t border-white/5 space-y-4">
               <div className="flex items-center gap-4">
