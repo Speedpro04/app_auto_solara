@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException, BackgroundTasks, Request
 from pydantic import BaseModel
 from typing import Optional
 import uuid
@@ -31,13 +31,18 @@ jobs: dict[str, dict] = {}
 
 
 @router.post("/generate", response_model=VideoStatusResponse)
-async def generate_video(req: VideoRequest, background_tasks: BackgroundTasks):
+async def generate_video(req: VideoRequest, background_tasks: BackgroundTasks, request: Request):
+    store_id = request.state.store_id
+    if not store_id:
+        raise HTTPException(status_code=400, detail="Loja não identificada para geração de vídeo")
+
     job_id = str(uuid.uuid4())
-    jobs[job_id] = {"status": "pending", "video_url": None, "copy": None, "error": None}
+    jobs[job_id] = {"status": "pending", "video_url": None, "copy": None, "error": None, "store_id": store_id}
 
     background_tasks.add_task(
         _run_pipeline,
         job_id=job_id,
+        store_id=store_id,
         vehicle_id=req.vehicle_id,
         site_url=req.site_url,
         site_nome=req.site_nome,
@@ -56,13 +61,17 @@ def get_status(job_id: str):
 
 
 @router.get("/vehicles")
-async def list_available_vehicles():
-    vehicles = await list_vehicles()
+async def list_available_vehicles(request: Request):
+    store_id = request.state.store_id
+    if not store_id:
+        raise HTTPException(status_code=400, detail="Loja não identificada para listar veículos")
+    vehicles = await list_vehicles(store_id)
     return {"vehicles": vehicles}
 
 
 async def _run_pipeline(
     job_id: str,
+    store_id: str,
     vehicle_id: str,
     site_url: str,
     site_nome: str,
@@ -70,7 +79,7 @@ async def _run_pipeline(
 ):
     try:
         jobs[job_id]["status"] = "buscando_fotos"
-        vehicle = await get_vehicle_with_photos(vehicle_id)
+        vehicle = await get_vehicle_with_photos(vehicle_id, store_id)
 
         if not vehicle or not vehicle.get("fotos"):
             raise ValueError("Veículo não encontrado ou sem fotos")

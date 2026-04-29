@@ -12,14 +12,15 @@ HEADERS = {
 }
 
 
-async def list_vehicles() -> list[dict]:
-    """Retorna lista de veículos ativos com thumbnail."""
+async def list_vehicles(store_id: str) -> list[dict]:
+    """Retorna lista de veículos ativos da loja com thumbnail."""
     async with httpx.AsyncClient() as client:
         res = await client.get(
             f"{SUPABASE_URL}/rest/v1/veiculos",
             headers=HEADERS,
             params={
                 "select": "id,marca,modelo,ano,km,preco,cor,combustivel,transmissao,status",
+                "store_id": f"eq.{store_id}",
                 "status": "eq.ativo",
                 "order": "created_at.desc",
                 "limit": "50",
@@ -36,8 +37,8 @@ async def list_vehicles() -> list[dict]:
     return veiculos
 
 
-async def get_vehicle_with_photos(vehicle_id: str) -> Optional[dict]:
-    """Retorna dados completos do veículo + URLs das fotos do storage."""
+async def get_vehicle_with_photos(vehicle_id: str, store_id: str) -> Optional[dict]:
+    """Retorna dados completos do veículo da loja + URLs das fotos do storage."""
     async with httpx.AsyncClient() as client:
         # Dados do veículo
         res = await client.get(
@@ -45,6 +46,7 @@ async def get_vehicle_with_photos(vehicle_id: str) -> Optional[dict]:
             headers=HEADERS,
             params={
                 "id": f"eq.{vehicle_id}",
+                "store_id": f"eq.{store_id}",
                 "select": "*",
                 "limit": "1",
             },
