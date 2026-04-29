@@ -6,7 +6,6 @@ type VehicleItem = {
   id: string
   title?: string
   brand?: string
-  model?: string
   year?: number
 }
 
@@ -64,7 +63,7 @@ function RacerRedes() {
   const generateSmartDescription = () => {
     const selectedVehicle = vehicles.find((v) => v.id === vehicleId)
     const vehicleText = selectedVehicle
-      ? `${selectedVehicle.brand ?? ''} ${selectedVehicle.model ?? selectedVehicle.title ?? ''} ${selectedVehicle.year ?? ''}`.trim()
+      ? `${selectedVehicle.brand ?? ''} ${selectedVehicle.title ?? ''} ${selectedVehicle.year ?? ''}`.trim()
       : 'este veículo'
 
     setSmartDescription(
@@ -182,7 +181,7 @@ function RacerRedes() {
               <option value="">Selecione um veículo</option>
               {vehicles.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {(v.title || `${v.brand ?? ''} ${v.model ?? ''}` || 'Veículo').trim()} ({v.id.slice(0, 8)})
+                  {(v.title || v.brand || 'Veículo').trim()} ({v.id.slice(0, 8)})
                 </option>
               ))}
             </select>

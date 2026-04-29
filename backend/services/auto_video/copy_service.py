@@ -49,15 +49,12 @@ async def generate_spin_copy(vehicle: dict) -> dict:
         raise RuntimeError("GEMINI_API_KEY não configurada")
 
     dados = f"""
-Marca: {vehicle.get('marca')}
-Modelo: {vehicle.get('modelo')}
-Ano: {vehicle.get('ano')}
+Marca: {vehicle.get('brand')}
+Modelo: {vehicle.get('title')}
+Ano: {vehicle.get('year')}
 Quilometragem: {vehicle.get('km', 'não informado')} km
-Preço: R$ {vehicle.get('preco')}
-Cor: {vehicle.get('cor', 'não informado')}
-Combustível: {vehicle.get('combustivel', 'Flex')}
-Transmissão: {vehicle.get('transmissao', 'Manual')}
-Diferenciais: {vehicle.get('diferenciais', 'não informado')}
+Preço: R$ {vehicle.get('price')}
+Descrição: {vehicle.get('description', 'não informado')}
 """.strip()
 
     async with httpx.AsyncClient(timeout=30) as client:

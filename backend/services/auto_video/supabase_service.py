@@ -16,12 +16,12 @@ async def list_vehicles(store_id: str) -> list[dict]:
     """Retorna lista de veículos ativos da loja com thumbnail."""
     async with httpx.AsyncClient() as client:
         res = await client.get(
-            f"{SUPABASE_URL}/rest/v1/veiculos",
+            f"{SUPABASE_URL}/rest/v1/vehicles",
             headers=HEADERS,
             params={
-                "select": "id,marca,modelo,ano,km,preco,cor,combustivel,transmissao,status",
+                "select": "id,brand,title,year,km,price,status",
                 "store_id": f"eq.{store_id}",
-                "status": "eq.ativo",
+                "status": "eq.available",
                 "order": "created_at.desc",
                 "limit": "50",
             },
@@ -42,7 +42,7 @@ async def get_vehicle_with_photos(vehicle_id: str, store_id: str) -> Optional[di
     async with httpx.AsyncClient() as client:
         # Dados do veículo
         res = await client.get(
-            f"{SUPABASE_URL}/rest/v1/veiculos",
+            f"{SUPABASE_URL}/rest/v1/vehicles",
             headers=HEADERS,
             params={
                 "id": f"eq.{vehicle_id}",
@@ -65,28 +65,20 @@ async def get_vehicle_with_photos(vehicle_id: str, store_id: str) -> Optional[di
 async def _get_fotos(vehicle_id: str, limit: int = 8) -> list[str]:
     """
     Busca URLs das fotos do veículo.
-    Assume tabela `veiculo_fotos` com coluna `path` apontando para o storage.
-    Ajuste conforme a estrutura do seu banco.
     """
     async with httpx.AsyncClient() as client:
         res = await client.get(
-            f"{SUPABASE_URL}/rest/v1/veiculo_fotos",
+            f"{SUPABASE_URL}/rest/v1/vehicle_media",
             headers=HEADERS,
             params={
-                "veiculo_id": f"eq.{vehicle_id}",
-                "select": "path,ordem",
-                "order": "ordem.asc",
+                "vehicle_id": f"eq.{vehicle_id}",
+                "select": "url,order",
+                "order": "order.asc",
                 "limit": str(limit),
             },
         )
         res.raise_for_status()
-        fotos = res.json()
+        media_list = res.json()
 
-    # Monta URL pública do storage
-    urls = []
-    for foto in fotos:
-        path = foto["path"]
-        url = f"{SUPABASE_URL}/storage/v1/object/public/veiculos/{path}"
-        urls.append(url)
-
-    return urls
+    # Retorna URLs diretas conforme schema
+    return [item["url"] for item in media_list]
