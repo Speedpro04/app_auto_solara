@@ -21,6 +21,7 @@ import AdminEditVehicle from './pages/admin/EditVehicle'
 import AdminStoreProfile from './pages/admin/StoreProfile'
 import AdminReports from './pages/admin/Reports'
 import SecondBrainAuto from './pages/admin/SecondBrain'
+import RacerRedes from './pages/admin/RacerRedes'
 import SuperAdminDashboard from './pages/superadmin/Dashboard'
 
 // Layouts
@@ -53,6 +54,7 @@ function AppRoutes() {
         <Route path="/admin/veiculos/:id/editar" element={<AdminEditVehicle />} />
         <Route path="/admin/loja" element={<AdminStoreProfile />} />
         <Route path="/admin/second-brain" element={<SecondBrainAuto />} />
+        <Route path="/admin/racer-redes" element={<RacerRedes />} />
         <Route path="/admin/relatorios" element={<AdminReports />} />
       </Route>
       {/* Rota do Dono do SaaS (Você) */}
